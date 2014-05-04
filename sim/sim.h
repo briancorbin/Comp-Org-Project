@@ -21,10 +21,22 @@
 enum opcodes
 {
 	OP_RTYPE	= 0x00,
+    OP_J        = 0x02,
 	OP_JAL		= 0x03,
+    OP_BEQ      = 0x04,
+    OP_BNE      = 0x05,
+    OP_ADDI     = 0x08,
 	OP_ADDIU	= 0x09,
+    OP_SLTI     = 0x0a,
+    OP_SLTIU    = 0x0b,
+    OP_ANDI     = 0x0c,
+    OP_ORI      = 0x0d,
 	OP_LUI		= 0x0f,
 	OP_LW		= 0x23,
+    OP_LBU      = 0x24,
+    OP_LHU      = 0x25,
+    OP_SB       = 0x28,
+    OP_SH       = 0x29,
 	OP_SW		= 0x2b
 };
 
