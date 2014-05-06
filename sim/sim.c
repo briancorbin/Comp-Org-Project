@@ -95,30 +95,6 @@ void RunSimulator(struct virtual_mem_region* memory, struct context* ctx)
  */
 int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
-
- //    OP_BGEZ     = 0x01, //rt = 00001
- //    OP_BGEZAL   = 0x01, //rt = 10001
- //    OP_BLTZ     = 0x01, //rt = 00000
- //    OP_BLTZAL   = 0x01, //rt = 10000
- //    OP_J        = 0x02,
- //    OP_JAL      = 0x03,
- //    OP_BEQ      = 0x04,
- //    OP_BNE      = 0x05,
- //    OP_BLEZ     = 0x06,
- //    OP_BGTZ     = 0x07,
- //    OP_ADDI     = 0x08,
- //    OP_ADDIU    = 0x09,
- //    OP_SLTI     = 0x0a,
- //    OP_SLTIU    = 0x0b,
- //    OP_ANDI     = 0x0c,
- //    OP_ORI      = 0x0d,
- //    OP_XORI     = 0x0e,
- //    OP_LUI      = 0x0f,
- //    OP_LB       = 0x20,
- //    OP_LW       = 0x23,
- //    OP_SB       = 0x28,
-	// OP_SW		= 0x2b
-
 	//TODO: Switch on opcode, if R-type instruction call SimulateRTypeInstruction()
 	//otherwise it's I/J type
 	switch(inst->itype.opcode)
@@ -126,6 +102,63 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 		case OP_RTYPE:
 			SimulateRtypeInstruction(inst, memory, ctx);
 			break;
+		case OP_BGEZ:
+
+			break;
+		case OP_J:
+
+			break;
+		case OP_JAL:
+
+			break;
+		case OP_BEQ:
+
+			break;
+		case OP_BNE:
+
+			break;
+		case OP_BLEZ:
+
+			break;
+		case OP_BGTZ:
+
+			break;
+		case OP_ADDI:
+
+			break;
+		case OP_ADDIU:
+
+			break;
+		case OP_SLTI:
+
+			break;
+		case OP_ANDI:
+
+			break;
+		case OP_ORI:
+
+			break;
+		case OP_XORI:
+
+			break;
+		case OP_LUI:
+
+			break;
+		case OP_LB:
+
+			break;
+		case OP_LW:
+
+			break;
+		case OP_SB:
+
+			break;
+		case OP_SW:
+
+			break;
+		default:
+			printf("Invalid or unsupported instruction\n");
+			return 0;
 	}
 	//Go on to next instruction by default
 	//Need to change this for branches
@@ -138,7 +171,74 @@ int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_re
 {
 	//TODO: switch on func, if syscall call SimulateSyscall()
 	//else process instruction normally
-	
+	switch (inst->rtype.func) {
+		case FUNC_SLL:
+
+			break;
+		case FUNC_SRL:
+
+			break;
+		case FUNC_SRA:
+
+			break;
+		case FUNC_SLLV:
+
+			break;
+		case FUNC_SRLV:
+
+			break;
+		case FUNC_JR:
+
+			break;
+		case FUNC_SYSCALL:
+			//SimulateSyscall(, memory, context)
+			break;
+		case FUNC_MFHI:
+
+			break;
+		case FUNC_MFLO:
+
+			break;
+		case FUNC_MULT:
+
+			break;
+		case FUNC_MULTU:
+
+			break;
+		case FUNC_DIV:
+
+			break;
+		case FUNC_DIVU:
+
+			break;
+		case FUNC_ADD:
+
+			break;
+		case FUNC_ADDU:
+
+			break;
+		case FUNC_SUB:
+
+			break;
+		case FUNC_SUBU:
+
+			break;
+		case FUNC_AND:
+
+			break;
+		case FUNC_OR:
+
+			break;
+		case FUNC_XOR:
+
+			break;
+		case FUNC_SLT:
+
+			break;
+		case FUNC_SLTU:
+
+			break;
+	}
 	return 1;
 }
 
