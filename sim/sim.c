@@ -95,9 +95,38 @@ void RunSimulator(struct virtual_mem_region* memory, struct context* ctx)
  */
 int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+
+ //    OP_BGEZ     = 0x01, //rt = 00001
+ //    OP_BGEZAL   = 0x01, //rt = 10001
+ //    OP_BLTZ     = 0x01, //rt = 00000
+ //    OP_BLTZAL   = 0x01, //rt = 10000
+ //    OP_J        = 0x02,
+ //    OP_JAL      = 0x03,
+ //    OP_BEQ      = 0x04,
+ //    OP_BNE      = 0x05,
+ //    OP_BLEZ     = 0x06,
+ //    OP_BGTZ     = 0x07,
+ //    OP_ADDI     = 0x08,
+ //    OP_ADDIU    = 0x09,
+ //    OP_SLTI     = 0x0a,
+ //    OP_SLTIU    = 0x0b,
+ //    OP_ANDI     = 0x0c,
+ //    OP_ORI      = 0x0d,
+ //    OP_XORI     = 0x0e,
+ //    OP_LUI      = 0x0f,
+ //    OP_LB       = 0x20,
+ //    OP_LW       = 0x23,
+ //    OP_SB       = 0x28,
+	// OP_SW		= 0x2b
+
 	//TODO: Switch on opcode, if R-type instruction call SimulateRTypeInstruction()
 	//otherwise it's I/J type
-	
+	switch(inst->itype.opcode)
+	{
+		case OP_RTYPE:
+			SimulateRtypeInstruction(inst, memory, ctx);
+			break;
+	}
 	//Go on to next instruction by default
 	//Need to change this for branches
 	ctx->pc += 4;
