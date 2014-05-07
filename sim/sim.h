@@ -47,11 +47,11 @@ enum opcodes
 
 enum functions
 {
-    FUNC_SLL        = 0x00,
-    FUNC_SRL        = 0x02,
+    FUNC_SLL        = 0x00, //done
+    FUNC_SRL        = 0x02, //done
     FUNC_SRA        = 0x03,
-    FUNC_SLLV       = 0x04,
-    FUNC_SRLV       = 0x05,
+    FUNC_SLLV       = 0x04, //done
+    FUNC_SRLV       = 0x05, //done
 	FUNC_JR			= 0x08,
 	FUNC_SYSCALL	= 0x0c,
     FUNC_MFHI       = 0x10,

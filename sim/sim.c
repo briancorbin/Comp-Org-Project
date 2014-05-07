@@ -342,10 +342,12 @@ void simSW(union mips_instruction* inst, struct virtual_mem_region* memory, stru
 
 void simSLL(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+    ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rt]<<inst->rtype.shamt;
 }
 
 void simSRL(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+    ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rt]>>inst->rtype.shamt;
 }
 
 void simSRA(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
@@ -354,10 +356,12 @@ void simSRA(union mips_instruction* inst, struct virtual_mem_region* memory, str
 
 void simSLLV(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+    ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rt]<<ctx->regs[inst->rtype.rs];
 }
 
 void simSRLV(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+    ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rt]>>ctx->regs[inst->rtype.rs];
 }
 
 void simJR(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
