@@ -307,14 +307,17 @@ void simSLTIU(union mips_instruction* inst, struct virtual_mem_region* memory, s
 
 void simANDI(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+    ctx->regs[inst->itype.rt] = ctx->regs[inst->itype.rs] & inst->itype.imm;
 }
 
 void simORI(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+    ctx->regs[inst->itype.rt] = ctx->regs[inst->itype.rs] | inst->itype.imm;
 }
 
 void simXORI(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+    ctx->regs[inst->itype.rt] = ctx->regs[inst->itype.rs] ^ inst->itype.imm;
 }
 
 void simLUI(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
@@ -371,6 +374,7 @@ void simMFLO(union mips_instruction* inst, struct virtual_mem_region* memory, st
 
 void simMULT(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+    ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] * ctx->regs[inst->rtype.rt];
 }
 
 void simMULTU(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
@@ -379,6 +383,7 @@ void simMULTU(union mips_instruction* inst, struct virtual_mem_region* memory, s
 
 void simDIV(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+    ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] / ctx->regs[inst->rtype.rt];
 }
 
 void simDIVU(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
@@ -387,30 +392,37 @@ void simDIVU(union mips_instruction* inst, struct virtual_mem_region* memory, st
 
 void simADD(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+    ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] + ctx->regs[inst->rtype.rt];
 }
 
 void simADDU(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+    ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] + ctx->regs[inst->rtype.rt];
 }
 
 void simSUB(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+    ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] - ctx->regs[inst->rtype.rt];
 }
 
 void simSUBU(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+    ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] - ctx->regs[inst->rtype.rt];
 }
 
 void simAND(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+    ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] & ctx->regs[inst->rtype.rt];
 }
 
 void simOR(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+    ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] | ctx->regs[inst->rtype.rt];
 }
 
 void simXOR(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+    ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] ^ ctx->regs[inst->rtype.rt];
 }
 
 void simSLT(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
