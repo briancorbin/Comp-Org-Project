@@ -124,6 +124,7 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 
 			break;
 		case OP_ADDI:
+            simADDI(ints, memory, ctx);
 
 			break;
 		case OP_ADDIU:
@@ -245,4 +246,177 @@ int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_re
 int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct context* ctx)
 {
 	return 1;
+}
+
+void simBGEZ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simBGEZAL(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simBLTZ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simBLTZAL(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simJ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simJAL(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simBEQ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simBNE(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simBLEZ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simBGTZ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simADDI(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+    ctx->regs[inst->itype.rt] = ctx->regs[inst->itype.rs] + inst->itype.imm;
+}
+
+void simADDIU(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simSLTI(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simSLTIU(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simANDI(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simORI(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simXORI(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simLUI(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simLB(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simLW(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simSB(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simSW(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simSLL(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simSRL(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simSRA(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simSLLV(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simSRLV(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simJR(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simMFHI(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simMFLO(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simMULT(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simMULTU(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simDIV(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simDIVU(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simADD(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simADDU(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simSUB(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simSUBU(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simAND(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simOR(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simXOR(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simSLT(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simSLTU(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
 }
