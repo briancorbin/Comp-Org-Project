@@ -72,177 +72,6 @@ void StoreWordToVirtualMemory(uint32_t address, uint32_t value, struct virtual_m
 	exit(1);
 }
 
-/**
-	@brief Runs the actual simulation
- */
-void RunSimulator(struct virtual_mem_region* memory, struct context* ctx)
-{
-	printf("Starting simulation...\n");
-	
-	union mips_instruction inst;
-	while(1)
-	{
-		inst.word = FetchWordFromVirtualMemory(ctx->pc, memory);
-		if(!SimulateInstruction(&inst, memory, ctx))
-			break;		
-	}
-}
-
-/**
-	@brief Simulates a single instruction
-	
-	Return 0 to exit the program (for syscall/invalid instruction) and 1 to keep going
- */
-int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
-{
-	//TODO: Switch on opcode, if R-type instruction call SimulateRTypeInstruction()
-	//otherwise it's I/J type
-	switch(inst->itype.opcode)
-	{
-		case OP_RTYPE:
-			SimulateRtypeInstruction(inst, memory, ctx);
-			break;
-		case OP_BGEZ:
-
-			break;
-		case OP_J:
-
-			break;
-		case OP_JAL:
-
-			break;
-		case OP_BEQ:
-
-			break;
-		case OP_BNE:
-
-			break;
-		case OP_BLEZ:
-
-			break;
-		case OP_BGTZ:
-
-			break;
-		case OP_ADDI:
-            simADDI(ints, memory, ctx);
-
-			break;
-		case OP_ADDIU:
-
-			break;
-		case OP_SLTI:
-
-			break;
-		case OP_ANDI:
-
-			break;
-		case OP_ORI:
-
-			break;
-		case OP_XORI:
-
-			break;
-		case OP_LUI:
-
-			break;
-		case OP_LB:
-
-			break;
-		case OP_LW:
-
-			break;
-		case OP_SB:
-
-			break;
-		case OP_SW:
-
-			break;
-		default:
-			printf("Invalid or unsupported instruction\n");
-			return 0;
-	}
-	//Go on to next instruction by default
-	//Need to change this for branches
-	ctx->pc += 4;
-	
-	return 1;
-}
-
-int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
-{
-	//TODO: switch on func, if syscall call SimulateSyscall()
-	//else process instruction normally
-	switch (inst->rtype.func) {
-		case FUNC_SLL:
-
-			break;
-		case FUNC_SRL:
-
-			break;
-		case FUNC_SRA:
-
-			break;
-		case FUNC_SLLV:
-
-			break;
-		case FUNC_SRLV:
-
-			break;
-		case FUNC_JR:
-
-			break;
-		case FUNC_SYSCALL:
-			//SimulateSyscall(, memory, context)
-			break;
-		case FUNC_MFHI:
-
-			break;
-		case FUNC_MFLO:
-
-			break;
-		case FUNC_MULT:
-
-			break;
-		case FUNC_MULTU:
-
-			break;
-		case FUNC_DIV:
-
-			break;
-		case FUNC_DIVU:
-
-			break;
-		case FUNC_ADD:
-
-			break;
-		case FUNC_ADDU:
-
-			break;
-		case FUNC_SUB:
-
-			break;
-		case FUNC_SUBU:
-
-			break;
-		case FUNC_AND:
-
-			break;
-		case FUNC_OR:
-
-			break;
-		case FUNC_XOR:
-
-			break;
-		case FUNC_SLT:
-
-			break;
-		case FUNC_SLTU:
-
-			break;
-	}
-	return 1;
-}
-
 int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct context* ctx)
 {
 	return 1;
@@ -250,18 +79,9 @@ int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct 
 
 void simBGEZ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
-}
-
-void simBGEZAL(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
-{
-}
-
-void simBLTZ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
-{
-}
-
-void simBLTZAL(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
-{
+	switch (inst->itype.rt) {
+		case 
+	}
 }
 
 void simJ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
@@ -435,4 +255,175 @@ void simSLT(union mips_instruction* inst, struct virtual_mem_region* memory, str
 
 void simSLTU(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+}
+
+/**
+	@brief Simulates a single instruction
+	
+	Return 0 to exit the program (for syscall/invalid instruction) and 1 to keep going
+ */
+int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+	//TODO: Switch on opcode, if R-type instruction call SimulateRTypeInstruction()
+	//otherwise it's I/J type
+	switch(inst->itype.opcode)
+	{
+		case OP_RTYPE:
+			SimulateRtypeInstruction(inst, memory, ctx);
+			break;
+		case OP_BGEZ:
+
+			break;
+		case OP_J:
+
+			break;
+		case OP_JAL:
+
+			break;
+		case OP_BEQ:
+
+			break;
+		case OP_BNE:
+
+			break;
+		case OP_BLEZ:
+
+			break;
+		case OP_BGTZ:
+
+			break;
+		case OP_ADDI:
+            simADDI(ints, memory, ctx);
+
+			break;
+		case OP_ADDIU:
+
+			break;
+		case OP_SLTI:
+
+			break;
+		case OP_ANDI:
+
+			break;
+		case OP_ORI:
+
+			break;
+		case OP_XORI:
+
+			break;
+		case OP_LUI:
+
+			break;
+		case OP_LB:
+
+			break;
+		case OP_LW:
+
+			break;
+		case OP_SB:
+
+			break;
+		case OP_SW:
+
+			break;
+		default:
+			printf("Invalid or unsupported instruction\n");
+			return 0;
+	}
+	//Go on to next instruction by default
+	//Need to change this for branches
+	ctx->pc += 4;
+	
+	return 1;
+}
+
+int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+	//TODO: switch on func, if syscall call SimulateSyscall()
+	//else process instruction normally
+	switch (inst->rtype.func) {
+		case FUNC_SLL:
+
+			break;
+		case FUNC_SRL:
+
+			break;
+		case FUNC_SRA:
+
+			break;
+		case FUNC_SLLV:
+
+			break;
+		case FUNC_SRLV:
+
+			break;
+		case FUNC_JR:
+
+			break;
+		case FUNC_SYSCALL:
+			//SimulateSyscall(, memory, context)
+			break;
+		case FUNC_MFHI:
+
+			break;
+		case FUNC_MFLO:
+
+			break;
+		case FUNC_MULT:
+
+			break;
+		case FUNC_MULTU:
+
+			break;
+		case FUNC_DIV:
+
+			break;
+		case FUNC_DIVU:
+
+			break;
+		case FUNC_ADD:
+
+			break;
+		case FUNC_ADDU:
+
+			break;
+		case FUNC_SUB:
+
+			break;
+		case FUNC_SUBU:
+
+			break;
+		case FUNC_AND:
+
+			break;
+		case FUNC_OR:
+
+			break;
+		case FUNC_XOR:
+
+			break;
+		case FUNC_SLT:
+
+			break;
+		case FUNC_SLTU:
+
+			break;
+	}
+	return 1;
+}
+
+/**
+	@brief Runs the actual simulation
+ */
+void RunSimulator(struct virtual_mem_region* memory, struct context* ctx)
+{
+	printf("Starting simulation...\n");
+	
+	union mips_instruction inst;
+	while(1)
+	{
+		inst.word = FetchWordFromVirtualMemory(ctx->pc, memory);
+		if(!SimulateInstruction(&inst, memory, ctx))
+			break;		
+	}
 }
