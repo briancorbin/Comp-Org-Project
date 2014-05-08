@@ -395,6 +395,7 @@ void simSB(union mips_instruction* inst, struct virtual_mem_region* memory, stru
 
 void simSW(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+    
 }
 
 void simSLL(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
