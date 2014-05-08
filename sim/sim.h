@@ -32,9 +32,9 @@ enum opcodes
     OP_BLEZ     = 0x06,
     OP_BGTZ     = 0x07,
     OP_ADDI     = 0x08, //done
-    OP_ADDIU    = 0x09,
-    OP_SLTI     = 0x0a,
-    OP_SLTIU    = 0x0b,
+    OP_ADDIU    = 0x09, //done
+    OP_SLTI     = 0x0a, //done
+    OP_SLTIU    = 0x0b, //done
     OP_ANDI     = 0x0c, //done
     OP_ORI      = 0x0d, //done
     OP_XORI     = 0x0e, //done
@@ -49,26 +49,26 @@ enum functions
 {
     FUNC_SLL        = 0x00, //done
     FUNC_SRL        = 0x02, //done
-    FUNC_SRA        = 0x03,
+    FUNC_SRA        = 0x03, //done
     FUNC_SLLV       = 0x04, //done
     FUNC_SRLV       = 0x05, //done
 	FUNC_JR			= 0x08,
 	FUNC_SYSCALL	= 0x0c,
     FUNC_MFHI       = 0x10,
     FUNC_MFLO       = 0x11,
-    FUNC_MULT       = 0x18, //done
+    FUNC_MULT       = 0x18,
     FUNC_MULTU      = 0x19,
-    FUNC_DIV        = 0x1a, //done
+    FUNC_DIV        = 0x1a,
     FUNC_DIVU       = 0x1b,
     FUNC_ADD        = 0x20, //done
-	FUNC_ADDU		= 0x21,
+	FUNC_ADDU		= 0x21, //done
     FUNC_SUB        = 0x22, //done
-    FUNC_SUBU       = 0x23,
+    FUNC_SUBU       = 0x23, //done
     FUNC_AND        = 0x24, //done
 	FUNC_OR			= 0x25, //done
     FUNC_XOR        = 0x26, //done
-    FUNC_SLT        = 0x2a,
-    FUNC_SLTU       = 0x2b
+    FUNC_SLT        = 0x2a, //done
+    FUNC_SLTU       = 0x2b  //done
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

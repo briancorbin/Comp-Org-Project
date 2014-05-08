@@ -115,14 +115,23 @@ void simADDI(union mips_instruction* inst, struct virtual_mem_region* memory, st
 
 void simADDIU(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+    ctx->regs[inst->itype.rt] = ctx->regs[inst->itype.rs] + inst->itype.imm;
 }
 
 void simSLTI(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+    if(ctx->regs[inst->itype.rs] < inst->itype.imm)
+        ctx->regs[inst->itype.rt] = 1;
+    else
+        ctx->regs[inst->itype.rt] = 0;
 }
 
 void simSLTIU(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+    if(ctx->regs[inst->itype.rs] < inst->itype.imm)
+        ctx->regs[inst->itype.rt] = 1;
+    else
+        ctx->regs[inst->itype.rt] = 0;
 }
 
 void simANDI(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
@@ -172,6 +181,7 @@ void simSRL(union mips_instruction* inst, struct virtual_mem_region* memory, str
 
 void simSRA(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+    ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rt]>>inst->rtype.shamt;
 }
 
 void simSLLV(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
@@ -203,6 +213,7 @@ void simMULT(union mips_instruction* inst, struct virtual_mem_region* memory, st
 
 void simMULTU(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+    ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] * ctx->regs[inst->rtype.rt];
 }
 
 void simDIV(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
@@ -212,6 +223,7 @@ void simDIV(union mips_instruction* inst, struct virtual_mem_region* memory, str
 
 void simDIVU(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+    ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] / ctx->regs[inst->rtype.rt];
 }
 
 void simADD(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
@@ -251,10 +263,18 @@ void simXOR(union mips_instruction* inst, struct virtual_mem_region* memory, str
 
 void simSLT(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+    if(ctx->regs[inst->rtype.rs] < ctx->regs[inst->rtype.rt])
+        ctx->regs[inst->rtype.rd] = 1;
+    else
+        ctx->regs[inst->rtype.rd] = 0;
 }
 
 void simSLTU(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+    if(ctx->regs[inst->rtype.rs] < ctx->regs[inst->rtype.rt])
+        ctx->regs[inst->rtype.rd] = 1;
+    else
+        ctx->regs[inst->rtype.rd] = 0;
 }
 
 /**
@@ -272,58 +292,75 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 			SimulateRtypeInstruction(inst, memory, ctx);
 			break;
 		case OP_BGEZ:
+            simBGEZ(inst, memory, ctx);
 
 			break;
 		case OP_J:
+            simJ(inst, memory, ctx);
 
 			break;
 		case OP_JAL:
+            simJAL(inst, memory, ctx);
 
 			break;
 		case OP_BEQ:
+            simBEQ(inst, memory, ctx);
 
 			break;
 		case OP_BNE:
+            simBNE(inst, memory, ctx);
 
 			break;
 		case OP_BLEZ:
+            simBLEZ(inst, memory, ctx);
 
 			break;
 		case OP_BGTZ:
+            simBGTZ(inst, memory, ctx);
 
 			break;
 		case OP_ADDI:
-            simADDI(ints, memory, ctx);
+            simADDI(inst, memory, ctx);
 
 			break;
 		case OP_ADDIU:
+            simADDIU(inst, memory, ctx);
 
 			break;
 		case OP_SLTI:
+            simSLTI(inst, memory, ctx);
 
 			break;
 		case OP_ANDI:
+            simANDI(inst, memory, ctx);
 
 			break;
 		case OP_ORI:
+            simORI(inst, memory, ctx);
 
 			break;
 		case OP_XORI:
+            simXORI(inst, memory, ctx);
 
 			break;
 		case OP_LUI:
+            simLUI(inst, memory, ctx);
 
 			break;
 		case OP_LB:
+            simLB(inst, memory, ctx);
 
 			break;
 		case OP_LW:
+            simLW(inst, memory, ctx);
 
 			break;
 		case OP_SB:
+            simSB(inst, memory, ctx);
 
 			break;
 		case OP_SW:
+            simSW(inst, memory, ctx);
 
 			break;
 		default:
@@ -343,69 +380,91 @@ int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_re
 	//else process instruction normally
 	switch (inst->rtype.func) {
 		case FUNC_SLL:
+            simSLL(inst, memory, ctx);
 
 			break;
 		case FUNC_SRL:
+            simSRL(inst, memory, ctx);
 
 			break;
 		case FUNC_SRA:
+            simSRA(inst, memory, ctx);
 
 			break;
 		case FUNC_SLLV:
+            simSLLV(inst, memory, ctx);
 
 			break;
 		case FUNC_SRLV:
+            simSRLV(inst, memory, ctx);
 
 			break;
 		case FUNC_JR:
+            simJR(inst, memory, ctx);
 
 			break;
 		case FUNC_SYSCALL:
-			//SimulateSyscall(, memory, context)
+			SimulateSyscall(inst, memory, context)
+            
 			break;
 		case FUNC_MFHI:
+            simMFHI(inst, memory, ctx);
 
 			break;
 		case FUNC_MFLO:
+            simMFLO(inst, memory, ctx);
 
 			break;
 		case FUNC_MULT:
+            simMULT(inst, memory, ctx);
 
 			break;
 		case FUNC_MULTU:
+            simMULTU(inst, memory, ctx);
 
 			break;
 		case FUNC_DIV:
+            simDIV(inst, memory, ctx);
 
 			break;
 		case FUNC_DIVU:
+            simDIVU(inst, memory, ctx);
 
 			break;
 		case FUNC_ADD:
+            simADD(inst, memory, ctx);
 
 			break;
 		case FUNC_ADDU:
+            simADDU(inst, memory, ctx);
 
 			break;
 		case FUNC_SUB:
+            simSUB(inst, memory, ctx);
 
 			break;
 		case FUNC_SUBU:
+            simSUBU(inst, memory, ctx);
 
 			break;
 		case FUNC_AND:
+            simAND(inst, memory, ctx);
 
 			break;
 		case FUNC_OR:
+            simOR(inst, memory, ctx);
 
 			break;
 		case FUNC_XOR:
+            simXOR(inst, memory, ctx);
 
 			break;
 		case FUNC_SLT:
+            simSLT(inst, memory, ctx);
 
 			break;
 		case FUNC_SLTU:
+            simSLTU(inst, memory, ctx);
 
 			break;
 	}
