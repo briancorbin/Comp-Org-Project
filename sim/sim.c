@@ -176,7 +176,7 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 
 			break;
 		default:
-			printf("Invalid or unsupported instruction\n");
+			printf("Invalid or unsupported instruction opcode\n");
 			return 0;
 	}
 	//Go on to next instruction by default
@@ -279,6 +279,9 @@ int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_re
             simSLTU(inst, memory, ctx);
 
 			break;
+		default:
+			printf("Invalid or unsupported instruction func code\n");
+			return 0;
 	}
 	return 1;
 }
@@ -288,11 +291,25 @@ int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct 
 	return 1;
 }
 
-void simBGEZ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+int SimulateBswitch(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
 	switch (inst->itype.rt) {
-		case
+		case 00001:
+		
+			break;
+		case 10001:
+		
+			break;
+		case 00000:
+		
+			break;
+		case 10000:
+		
+			break;
+		default:
+			return 0;
 	}
+	return 1;
 }
 
 void simJ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)

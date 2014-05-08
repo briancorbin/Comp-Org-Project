@@ -175,6 +175,7 @@ void StoreWordToVirtualMemory(uint32_t address, uint32_t value, struct virtual_m
 
 int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx);
 int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx);
+int SimulateBswitch(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx);
 int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct context* ctx);
 int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct context* ctx);
 
