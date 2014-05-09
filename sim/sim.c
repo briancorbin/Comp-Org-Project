@@ -105,75 +105,57 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 			break;
 		case OP_BGEZ:
             simBGEZ(inst, memory, ctx);
-
 			break;
 		case OP_J:
             simJ(inst, memory, ctx);
-
 			break;
 		case OP_JAL:
             simJAL(inst, memory, ctx);
-
 			break;
 		case OP_BEQ:
             simBEQ(inst, memory, ctx);
-
 			break;
 		case OP_BNE:
             simBNE(inst, memory, ctx);
-
 			break;
 		case OP_BLEZ:
             simBLEZ(inst, memory, ctx);
-
 			break;
 		case OP_BGTZ:
             simBGTZ(inst, memory, ctx);
-
 			break;
 		case OP_ADDI:
             simADDI(inst, memory, ctx);
-
 			break;
 		case OP_ADDIU:
             simADDIU(inst, memory, ctx);
-
 			break;
 		case OP_SLTI:
             simSLTI(inst, memory, ctx);
-
 			break;
 		case OP_ANDI:
             simANDI(inst, memory, ctx);
-
 			break;
 		case OP_ORI:
             simORI(inst, memory, ctx);
-
 			break;
 		case OP_XORI:
             simXORI(inst, memory, ctx);
-
 			break;
 		case OP_LUI:
             simLUI(inst, memory, ctx);
-
 			break;
 		case OP_LB:
             simLB(inst, memory, ctx);
-
 			break;
 		case OP_LW:
             simLW(inst, memory, ctx);
-
 			break;
 		case OP_SB:
             simSB(inst, memory, ctx);
-
 			break;
 		case OP_SW:
             simSW(inst, memory, ctx);
-
 			break;
 		default:
 			printf("Invalid or unsupported instruction opcode\n");
@@ -193,51 +175,39 @@ int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_re
 	switch (inst->rtype.func) {
 		case FUNC_SLL:
             simSLL(inst, memory, ctx);
-
 			break;
 		case FUNC_SRL:
             simSRL(inst, memory, ctx);
-
 			break;
 		case FUNC_SRA:
             simSRA(inst, memory, ctx);
-
 			break;
 		case FUNC_SLLV:
             simSLLV(inst, memory, ctx);
-
 			break;
 		case FUNC_SRLV:
             simSRLV(inst, memory, ctx);
-
 			break;
 		case FUNC_JR:
             simJR(inst, memory, ctx);
-
 			break;
 		case FUNC_SYSCALL:
 			SimulateSyscall(inst, memory, context)
-            
 			break;
 		case FUNC_MFHI:
             simMFHI(inst, memory, ctx);
-
 			break;
 		case FUNC_MFLO:
             simMFLO(inst, memory, ctx);
-
 			break;
 		case FUNC_MULT:
             simMULT(inst, memory, ctx);
-
 			break;
 		case FUNC_MULTU:
             simMULTU(inst, memory, ctx);
-
 			break;
 		case FUNC_DIV:
             simDIV(inst, memory, ctx);
-
 			break;
 		case FUNC_DIVU:
             simDIVU(inst, memory, ctx);
@@ -295,21 +265,37 @@ int SimulateBswitch(union mips_instruction* inst, struct virtual_mem_region* mem
 {
 	switch (inst->itype.rt) {
 		case 00001:
-		
+			simBGEZ(inst, memory, ctx);
 			break;
 		case 10001:
-		
+			simBGEZAL(inst, memory, ctx);
 			break;
 		case 00000:
-		
+			simBLTZ(inst, memory, ctx);
 			break;
 		case 10000:
-		
+			simBLTZAL(inst, memory, ctx);
 			break;
 		default:
 			return 0;
 	}
 	return 1;
+}
+
+void simBGEZ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simBGEZAL(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simBLTZ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
+}
+
+void simBLTZAL(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
+{
 }
 
 void simJ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
