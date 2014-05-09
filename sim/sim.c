@@ -288,18 +288,27 @@ void simBGEZAL(union mips_instruction* inst, struct virtual_mem_region* memory, 
 
 void simBLTZ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+	if (ctx->regs[inst->itype.rs] < 0)
+		ctx->pc = (inst->itype.imm << 2);
 }
 
 void simBLTZAL(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+	if (ctx->regs[inst->itype.rs] < 0) {
+		ctx->regs[ra] = ctx->pc + 8;
+		ctx->pc = (inst->itype.imm << 2);
+	}
 }
 
 void simJ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+	ctx->pc = inst->jtype.addr;
 }
 
 void simJAL(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+	ctx->regs[ra] = ctx->pc + 8;
+	ctx->pc = (inst->jtype.addr << 2);
 }
 
 void simBEQ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
@@ -316,10 +325,14 @@ void simBNE(union mips_instruction* inst, struct virtual_mem_region* memory, str
 
 void simBLEZ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+	if (ctx->regs[inst->itype.rs] <= 0)
+		ctx->pc = (inst->itype.imm << 2);
 }
 
 void simBGTZ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+	if (ctx->regs[inst->itype.rs] > 0)
+		ctx->pc = (inst->itype.imm << 2);
 }
 
 void simADDI(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
@@ -415,6 +428,7 @@ void simSRLV(union mips_instruction* inst, struct virtual_mem_region* memory, st
 
 void simJR(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+	ctx->pc = ctx->regs[inst->rtype.rs];
 }
 
 void simMFHI(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
