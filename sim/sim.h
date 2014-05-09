@@ -38,11 +38,11 @@ enum opcodes
     OP_ANDI     = 0x0c, //done
     OP_ORI      = 0x0d, //done
     OP_XORI     = 0x0e, //done
-    OP_LUI      = 0x0f,
-    OP_LB       = 0x20,
-    OP_LW       = 0x23,
-    OP_SB       = 0x28,
-	OP_SW		= 0x2b
+    OP_LUI      = 0x0f, //done
+    OP_LB       = 0x20, //done
+    OP_LW       = 0x23, //done
+    OP_SB       = 0x28, //done
+	OP_SW		= 0x2b  //done
 };
 
 enum functions

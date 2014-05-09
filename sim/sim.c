@@ -365,22 +365,27 @@ void simXORI(union mips_instruction* inst, struct virtual_mem_region* memory, st
 
 void simLUI(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+    ctx->regs[inst->itype.rt] = inst->itype.imm<<16;
 }
 
 void simLB(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+    ctx->regs[inst->itype.rt] = FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, memory) & 0xff;
 }
 
 void simLW(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+    ctx->regs[inst->itype.rt] = FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, memory);
 }
 
 void simSB(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+    StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, ctx->regs[inst->itype.rt] & 0xff, memory);
 }
 
 void simSW(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+    StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, ctx->regs[inst->itype.rt], memory);
 }
 
 void simSLL(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
