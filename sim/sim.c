@@ -211,43 +211,33 @@ int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_re
 			break;
 		case FUNC_DIVU:
             simDIVU(inst, memory, ctx);
-
 			break;
 		case FUNC_ADD:
             simADD(inst, memory, ctx);
-
 			break;
 		case FUNC_ADDU:
             simADDU(inst, memory, ctx);
-
 			break;
 		case FUNC_SUB:
             simSUB(inst, memory, ctx);
-
 			break;
 		case FUNC_SUBU:
             simSUBU(inst, memory, ctx);
-
 			break;
 		case FUNC_AND:
             simAND(inst, memory, ctx);
-
 			break;
 		case FUNC_OR:
             simOR(inst, memory, ctx);
-
 			break;
 		case FUNC_XOR:
             simXOR(inst, memory, ctx);
-
 			break;
 		case FUNC_SLT:
             simSLT(inst, memory, ctx);
-
 			break;
 		case FUNC_SLTU:
             simSLTU(inst, memory, ctx);
-
 			break;
 		default:
 			printf("Invalid or unsupported instruction func code\n");
@@ -284,10 +274,16 @@ int SimulateBswitch(union mips_instruction* inst, struct virtual_mem_region* mem
 
 void simBGEZ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+	if (ctx->regs[inst->itype.rs] >= 0)
+		ctx->pc = (inst->itype.imm << 2);
 }
 
 void simBGEZAL(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+	if (ctx->regs[inst->itype.rs] >= 0) {
+		ctx->regs[ra] = ctx->pc + 8;
+		ctx->pc = (inst->itype.imm << 2);
+	}
 }
 
 void simBLTZ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
@@ -308,10 +304,14 @@ void simJAL(union mips_instruction* inst, struct virtual_mem_region* memory, str
 
 void simBEQ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+	if(ctx->regs[inst->itype.rs] == ctx->regs[inst->itype.rt])
+ 		ctx->pc = ctx->pc + 4 + inst->itype.imm;
 }
 
 void simBNE(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+	if(ctx->regs[inst->itype.rs] != ctx->regs[inst->itype.rt])
+ 		ctx->pc = ctx->pc + 4 + inst->itype.imm;
 }
 
 void simBLEZ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
