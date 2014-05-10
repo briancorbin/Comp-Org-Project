@@ -98,13 +98,16 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 {
 	//TODO: Switch on opcode, if R-type instruction call SimulateRTypeInstruction()
 	//otherwise it's I/J type
+
+	ctx->regs[zero] = 0;
+
 	switch(inst->itype.opcode)
 	{
 		case OP_RTYPE:
 			SimulateRtypeInstruction(inst, memory, ctx);
 			break;
-		case OP_BGEZ:
-            simBGEZ(inst, memory, ctx);
+		case OP_BGEZ: //this will deal with BGEZ, BGEZAL, BLTZ, BLTZAL
+            SimulateBswitch(inst, memory, ctx);
 			break;
 		case OP_J:
             simJ(inst, memory, ctx);
@@ -192,7 +195,7 @@ int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_re
             simJR(inst, memory, ctx);
 			break;
 		case FUNC_SYSCALL:
-			SimulateSyscall(inst, memory, context)
+			SimulateSyscall(ctx->regs[v0], memory, ctx);
 			break;
 		case FUNC_MFHI:
             simMFHI(inst, memory, ctx);
@@ -248,22 +251,48 @@ int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_re
 
 int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct context* ctx)
 {
+	switch (callnum) {
+		case 1:
+			printf("%d\n",ctx->regs[a0]);
+			break;
+		case 2:
+			break;
+		case 3:
+			break;
+		case 4:
+			break;
+		case 5:
+			break;
+		case 6:
+			break;
+		case 7:
+			break;
+		case 8:
+			break;
+		case 9:
+			break;
+		case 10:
+			exit(1);
+			break;
+		default:
+			break;
+	}
 	return 1;
 }
 
 int SimulateBswitch(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
 	switch (inst->itype.rt) {
-		case 00001:
+		case 0x01:
 			simBGEZ(inst, memory, ctx);
 			break;
-		case 10001:
+		case 0x11:
 			simBGEZAL(inst, memory, ctx);
 			break;
-		case 00000:
+		case 0x00:
 			simBLTZ(inst, memory, ctx);
 			break;
-		case 10000:
+		case 0x10:
 			simBLTZAL(inst, memory, ctx);
 			break;
 		default:

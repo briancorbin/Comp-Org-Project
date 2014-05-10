@@ -1,15 +1,11 @@
-/**
-	@file
-	@author Andrew D. Zonenberg
-	@brief Test program
- */
-
 #include "registers.h"
-
 .globl __start
+
 __start:
-	//Simulator loads $sp with a valid address before starting program
+	li v0, 1
+	addi a0, zero, 10
+	syscall
 
 quit:
-	li		v0, 10				//syscall 10: quit program
+	li v0, 10
 	syscall
