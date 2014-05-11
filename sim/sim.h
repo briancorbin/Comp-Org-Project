@@ -31,14 +31,14 @@ enum opcodes
     OP_BNE      = 0x05, //done
     OP_BLEZ     = 0x06, //done
     OP_BGTZ     = 0x07, //done
-    OP_ADDI     = 0x08, //done
-    OP_ADDIU    = 0x09, //done
-    OP_SLTI     = 0x0a, //done
-    OP_SLTIU    = 0x0b, //done
+    OP_ADDI     = 0x08, //done | testing complete
+    OP_ADDIU    = 0x09, //done | testing complete
+    OP_SLTI     = 0x0a, //done | testing complete
+    OP_SLTIU    = 0x0b, //done | testing complete
     OP_ANDI     = 0x0c, //done
-    OP_ORI      = 0x0d, //done
+    OP_ORI      = 0x0d, //done | testing complete
     OP_XORI     = 0x0e, //done
-    OP_LUI      = 0x0f, //done
+    OP_LUI      = 0x0f, //done | testing complete
     OP_LB       = 0x20, //done
     OP_LW       = 0x23, //done
     OP_SB       = 0x28, //done
@@ -143,6 +143,7 @@ struct context
 {
 	uint32_t pc;
 	uint32_t regs[32];
+	float fp_regs[32];
     uint32_t HI;
     uint32_t LO;
 };
@@ -160,6 +161,14 @@ enum mips_regids
 	gp,
 	sp,
 	ra
+};
+
+enum mips_fpregids
+{
+	f0, f1, f2, f3, f4, f5, f6, f7, f8, f9, f10,
+	f11, f12, f13, f14, f15, f16, f17, f18, f19, f20,
+	f21, f22, f23, f24, f25, f26, f27, f28, f29, f30,
+	f31
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

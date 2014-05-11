@@ -136,6 +136,9 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 		case OP_SLTI:
             simSLTI(inst, memory, ctx);
 			break;
+		case OP_SLTIU:
+            simSLTIU(inst, memory, ctx);
+			break;
 		case OP_ANDI:
             simANDI(inst, memory, ctx);
 			break;
@@ -252,27 +255,40 @@ int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_re
 int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct context* ctx)
 {
 	switch (callnum) {
-		case 1:
+		case 1: //print integer
 			printf("%d\n",ctx->regs[a0]);
 			break;
-		case 2:
+		case 2: //print float
+			printf("%f", ctx->fp_regs[f12]);
 			break;
-		case 3:
+		case 3: //print double
+			printf("%e", ctx->fp_regs[f12]);
 			break;
-		case 4:
+		case 4: //print string
+			printf("%s", ctx->regs[a0]);
 			break;
-		case 5:
+		case 5: //read integer
+			scanf("%d", ctx->regs[v0]);
 			break;
-		case 6:
+		case 6: //read float
+			scanf("%f", ctx->fp_regs[f0]);
 			break;
-		case 7:
+		case 7: //read double
+			scanf("%e", ctx->fp_regs[f0]);
 			break;
-		case 8:
+		case 8: //read string
+
 			break;
-		case 9:
+		case 9: //memory allocation
 			break;
-		case 10:
+		case 10: //exit (end of program)
 			exit(1);
+			break;
+		case 11: //print character
+			printf("%c", ctx->regs[a0]);
+			break;
+		case 12: //read character
+			scanf("%c", ctx->regs[v0]);
 			break;
 		default:
 			break;
