@@ -35,9 +35,9 @@ enum opcodes
     OP_ADDIU    = 0x09, //done | testing complete
     OP_SLTI     = 0x0a, //done | testing complete
     OP_SLTIU    = 0x0b, //done | testing complete
-    OP_ANDI     = 0x0c, //done
+    OP_ANDI     = 0x0c, //done | testing complete
     OP_ORI      = 0x0d, //done | testing complete
-    OP_XORI     = 0x0e, //done
+    OP_XORI     = 0x0e, //done | testing complete
     OP_LUI      = 0x0f, //done | testing complete
     OP_LB       = 0x20, //done
     OP_LW       = 0x23, //done
@@ -60,15 +60,15 @@ enum functions
     FUNC_MULTU      = 0x19, //done
     FUNC_DIV        = 0x1a, //done
     FUNC_DIVU       = 0x1b, //done
-    FUNC_ADD        = 0x20, //done
-	FUNC_ADDU		= 0x21, //done
-    FUNC_SUB        = 0x22, //done
-    FUNC_SUBU       = 0x23, //done
-    FUNC_AND        = 0x24, //done
-	FUNC_OR			= 0x25, //done
-    FUNC_XOR        = 0x26, //done
-    FUNC_SLT        = 0x2a, //done
-    FUNC_SLTU       = 0x2b  //done
+    FUNC_ADD        = 0x20, //done | testing complete
+	FUNC_ADDU		= 0x21, //done | testing complete
+    FUNC_SUB        = 0x22, //done | testing complete
+    FUNC_SUBU       = 0x23, //done | testing complete
+    FUNC_AND        = 0x24, //done | testing complete
+	FUNC_OR			= 0x25, //done | testing complete
+    FUNC_XOR        = 0x26, //done | testing complete
+    FUNC_SLT        = 0x2a, //done | testing complete
+    FUNC_SLTU       = 0x2b  //done | testing complete
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -143,7 +143,6 @@ struct context
 {
 	uint32_t pc;
 	uint32_t regs[32];
-	float fp_regs[32];
     uint32_t HI;
     uint32_t LO;
 };
@@ -161,14 +160,6 @@ enum mips_regids
 	gp,
 	sp,
 	ra
-};
-
-enum mips_fpregids
-{
-	f0, f1, f2, f3, f4, f5, f6, f7, f8, f9, f10,
-	f11, f12, f13, f14, f15, f16, f17, f18, f19, f20,
-	f21, f22, f23, f24, f25, f26, f27, f28, f29, f30,
-	f31
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

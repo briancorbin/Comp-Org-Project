@@ -256,13 +256,7 @@ int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct 
 {
 	switch (callnum) {
 		case 1: //print integer
-			printf("%d\n",ctx->regs[a0]);
-			break;
-		case 2: //print float
-			printf("%f", ctx->fp_regs[f12]);
-			break;
-		case 3: //print double
-			printf("%e", ctx->fp_regs[f12]);
+			printf("%d\n", ctx->regs[a0]);
 			break;
 		case 4: //print string
 			printf("%s", ctx->regs[a0]);
@@ -270,25 +264,11 @@ int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct 
 		case 5: //read integer
 			scanf("%d", ctx->regs[v0]);
 			break;
-		case 6: //read float
-			scanf("%f", ctx->fp_regs[f0]);
-			break;
-		case 7: //read double
-			scanf("%e", ctx->fp_regs[f0]);
-			break;
 		case 8: //read string
-
-			break;
-		case 9: //memory allocation
+			scanf("%s", ctx->regs[v0]);
 			break;
 		case 10: //exit (end of program)
 			exit(1);
-			break;
-		case 11: //print character
-			printf("%c", ctx->regs[a0]);
-			break;
-		case 12: //read character
-			scanf("%c", ctx->regs[v0]);
 			break;
 		default:
 			break;
