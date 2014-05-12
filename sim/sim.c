@@ -270,6 +270,8 @@ int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct 
 		default:
 			break;
 	}
+    
+    ctx->pc += 4;
 	return 1;
 }
 
@@ -300,7 +302,6 @@ void simBGEZ(union mips_instruction* inst, struct virtual_mem_region* memory, st
 		ctx->pc = (inst->itype.imm << 2);
     else
         ctx->pc += 4;
-        
 }
 
 void simBGEZAL(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
@@ -333,19 +334,19 @@ void simBLTZAL(union mips_instruction* inst, struct virtual_mem_region* memory, 
 
 void simJ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
-	ctx->pc = inst->jtype.addr;
+	ctx->pc = (ctx->pc & 0xf0000000) | (inst->jtype.addr << 2);
 }
 
 void simJAL(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
 	ctx->regs[ra] = ctx->pc + 8;
-	ctx->pc = (inst->jtype.addr << 2);
+	ctx->pc = (ctx->pc & 0xf0000000) | (inst->jtype.addr << 2);
 }
 
 void simBEQ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
 	if(ctx->regs[inst->itype.rs] == ctx->regs[inst->itype.rt])
- 		ctx->pc = ctx->pc + 4 + inst->itype.imm;
+ 		ctx->pc = (ctx->pc + (inst->itype.imm << 2));
     else
         ctx->pc += 4;
 }
@@ -353,7 +354,7 @@ void simBEQ(union mips_instruction* inst, struct virtual_mem_region* memory, str
 void simBNE(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
 	if(ctx->regs[inst->itype.rs] != ctx->regs[inst->itype.rt])
- 		ctx->pc = ctx->pc + 4 + inst->itype.imm;
+ 		ctx->pc = (ctx->pc + (inst->itype.imm << 2));
     else
         ctx->pc += 4;
 }
@@ -361,7 +362,7 @@ void simBNE(union mips_instruction* inst, struct virtual_mem_region* memory, str
 void simBLEZ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
 	if (ctx->regs[inst->itype.rs] <= 0)
-		ctx->pc = (inst->itype.imm << 2);
+		ctx->pc = (ctx->pc + (inst->itype.imm << 2));
     else
         ctx->pc += 4;
 }
@@ -369,7 +370,7 @@ void simBLEZ(union mips_instruction* inst, struct virtual_mem_region* memory, st
 void simBGTZ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
 	if (ctx->regs[inst->itype.rs] > 0)
-		ctx->pc = (inst->itype.imm << 2);
+		ctx->pc = (ctx->pc + (inst->itype.imm << 2));
     else
         ctx->pc += 4;
 }
@@ -434,7 +435,14 @@ void simLUI(union mips_instruction* inst, struct virtual_mem_region* memory, str
 
 void simLB(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
-    ctx->regs[inst->itype.rt] = FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, memory) & 0xff;
+    if(inst->itype.imm % 4 == 0)
+		ctx->regs[inst->itype.rt] = FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, memory) & 0x000000ff;
+	else if(inst->itype.imm % 4 == 1)
+		ctx->regs[inst->itype.rt] = (FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 1, memory) & 0x0000ff00)>>8;
+	else if(inst->itype.imm % 4 == 2)
+		ctx->regs[inst->itype.rt] = (FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 2, memory) & 0x00ff0000)>>16;
+	else
+		ctx->regs[inst->itype.rt] = (FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 3, memory) & 0xff000000)>>24;
     ctx->pc += 4;
 }
 
@@ -446,7 +454,14 @@ void simLW(union mips_instruction* inst, struct virtual_mem_region* memory, stru
 
 void simSB(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
-    StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, ctx->regs[inst->itype.rt] & 0xff, memory);
+    if(inst->itype.imm % 4 == 0)
+		StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, ctx->regs[inst->itype.rt] & 0x000000ff, memory);
+	else if(inst->itype.imm % 4 == 1)
+		StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 1, (ctx->regs[inst->itype.rt]<<8) & 0x0000ff00, memory);
+	else if(inst->itype.imm % 4 == 2)
+		StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 2, (ctx->regs[inst->itype.rt]<<16) & 0x00ff0000, memory);
+	else
+		StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 3, (ctx->regs[inst->itype.rt]<<24) & 0xff000000, memory);
     ctx->pc += 4;
 }
 
