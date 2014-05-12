@@ -408,7 +408,14 @@ void simLUI(union mips_instruction* inst, struct virtual_mem_region* memory, str
 
 void simLB(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
-    ctx->regs[inst->itype.rt] = FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, memory) & 0xff;
+	if(inst->itype.imm % 4 == 0)
+		ctx->regs[inst->itype.rt] = FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, memory) & 0x000000ff;
+	else if(inst->itype.imm % 4 == 1)
+		ctx->regs[inst->itype.rt] = (FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 1, memory) & 0x0000ff00)>>8;
+	else if(inst->itype.imm % 4 == 2)
+		ctx->regs[inst->itype.rt] = (FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 2, memory) & 0x00ff0000)>>16;
+	else
+		ctx->regs[inst->itype.rt] = (FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 3, memory) & 0xff000000)>>24;
 }
 
 void simLW(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
@@ -418,7 +425,14 @@ void simLW(union mips_instruction* inst, struct virtual_mem_region* memory, stru
 
 void simSB(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
-    StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, ctx->regs[inst->itype.rt] & 0xff, memory);
+	if(inst->itype.imm % 4 == 0)
+		StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, ctx->regs[inst->itype.rt] & 0x000000ff, memory);
+	else if(inst->itype.imm % 4 == 1)
+		StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 1, (ctx->regs[inst->itype.rt]<<8) & 0x0000ff00, memory);
+	else if(inst->itype.imm % 4 == 2)
+		StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 2, (ctx->regs[inst->itype.rt]<<16) & 0x00ff0000, memory);
+	else
+		StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 3, (ctx->regs[inst->itype.rt]<<24) & 0xff000000, memory);
 }
 
 void simSW(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
