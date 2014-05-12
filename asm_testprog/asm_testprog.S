@@ -6,9 +6,9 @@ __start:
 
 	addi s0, zero, 15
 	addi s1, zero, 1
-
-	srlv s2, s0, s1 // 1111 >> 1 = 111 (7)
-	addi a0, s2, 0
+	j skip
+	add s0, s1, s0
+skip:
 	syscall
 
 quit:
