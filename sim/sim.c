@@ -167,9 +167,6 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 			printf("Invalid or unsupported instruction opcode\n");
 			return 0;
 	}
-	//Go on to next instruction by default
-	//Need to change this for branches
-	ctx->pc += 4;
 	
 	return 1;
 }
@@ -301,6 +298,9 @@ void simBGEZ(union mips_instruction* inst, struct virtual_mem_region* memory, st
 {
 	if (ctx->regs[inst->itype.rs] >= 0)
 		ctx->pc = (inst->itype.imm << 2);
+    else
+        ctx->pc += 4;
+        
 }
 
 void simBGEZAL(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
@@ -309,12 +309,16 @@ void simBGEZAL(union mips_instruction* inst, struct virtual_mem_region* memory, 
 		ctx->regs[ra] = ctx->pc + 8;
 		ctx->pc = (inst->itype.imm << 2);
 	}
+    else
+        ctx->pc += 4;
 }
 
 void simBLTZ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
 	if (ctx->regs[inst->itype.rs] < 0)
 		ctx->pc = (inst->itype.imm << 2);
+    else
+        ctx->pc += 4;
 }
 
 void simBLTZAL(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
@@ -323,6 +327,8 @@ void simBLTZAL(union mips_instruction* inst, struct virtual_mem_region* memory, 
 		ctx->regs[ra] = ctx->pc + 8;
 		ctx->pc = (inst->itype.imm << 2);
 	}
+    else
+        ctx->pc += 4;
 }
 
 void simJ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
@@ -340,34 +346,46 @@ void simBEQ(union mips_instruction* inst, struct virtual_mem_region* memory, str
 {
 	if(ctx->regs[inst->itype.rs] == ctx->regs[inst->itype.rt])
  		ctx->pc = ctx->pc + 4 + inst->itype.imm;
+    else
+        ctx->pc += 4;
 }
 
 void simBNE(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
 	if(ctx->regs[inst->itype.rs] != ctx->regs[inst->itype.rt])
  		ctx->pc = ctx->pc + 4 + inst->itype.imm;
+    else
+        ctx->pc += 4;
 }
 
 void simBLEZ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
 	if (ctx->regs[inst->itype.rs] <= 0)
 		ctx->pc = (inst->itype.imm << 2);
+    else
+        ctx->pc += 4;
 }
 
 void simBGTZ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
 	if (ctx->regs[inst->itype.rs] > 0)
 		ctx->pc = (inst->itype.imm << 2);
+    else
+        ctx->pc += 4;
 }
 
 void simADDI(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
     ctx->regs[inst->itype.rt] = ctx->regs[inst->itype.rs] + inst->itype.imm;
+    
+    ctx->pc += 4;
 }
 
 void simADDIU(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
     ctx->regs[inst->itype.rt] = ctx->regs[inst->itype.rs] + inst->itype.imm;
+    
+    ctx->pc += 4;
 }
 
 void simSLTI(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
@@ -376,6 +394,8 @@ void simSLTI(union mips_instruction* inst, struct virtual_mem_region* memory, st
         ctx->regs[inst->itype.rt] = 1;
     else
         ctx->regs[inst->itype.rt] = 0;
+    
+    ctx->pc += 4;
 }
 
 void simSLTIU(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
@@ -384,71 +404,86 @@ void simSLTIU(union mips_instruction* inst, struct virtual_mem_region* memory, s
         ctx->regs[inst->itype.rt] = 1;
     else
         ctx->regs[inst->itype.rt] = 0;
+    
+    ctx->pc += 4;
 }
 
 void simANDI(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
     ctx->regs[inst->itype.rt] = ctx->regs[inst->itype.rs] & inst->itype.imm;
+    ctx->pc += 4;
 }
 
 void simORI(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
     ctx->regs[inst->itype.rt] = ctx->regs[inst->itype.rs] | inst->itype.imm;
+    ctx->pc += 4;
 }
 
 void simXORI(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
     ctx->regs[inst->itype.rt] = ctx->regs[inst->itype.rs] ^ inst->itype.imm;
+    ctx->pc += 4;
 }
 
 void simLUI(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
     ctx->regs[inst->itype.rt] = inst->itype.imm<<16;
+    ctx->pc += 4;
 }
 
 void simLB(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
     ctx->regs[inst->itype.rt] = FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, memory) & 0xff;
+    ctx->pc += 4;
 }
 
 void simLW(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
     ctx->regs[inst->itype.rt] = FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, memory);
+    ctx->pc += 4;
 }
 
 void simSB(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
     StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, ctx->regs[inst->itype.rt] & 0xff, memory);
+    ctx->pc += 4;
 }
 
 void simSW(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
     StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, ctx->regs[inst->itype.rt], memory);
+    ctx->pc += 4;
 }
 
 void simSLL(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
     ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rt]<<inst->rtype.shamt;
+    ctx->pc += 4;
 }
 
 void simSRL(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
     ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rt]>>inst->rtype.shamt;
+    ctx->pc += 4;
 }
 
 void simSRA(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
     ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rt]>>inst->rtype.shamt;
+    ctx->pc += 4;
 }
 
 void simSLLV(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
     ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rt]<<ctx->regs[inst->rtype.rs];
+    ctx->pc += 4;
 }
 
 void simSRLV(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
     ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rt]>>ctx->regs[inst->rtype.rs];
+    ctx->pc += 4;
 }
 
 void simJR(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
@@ -459,68 +494,83 @@ void simJR(union mips_instruction* inst, struct virtual_mem_region* memory, stru
 void simMFHI(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
     ctx->regs[inst->rtype.rd] = ctx->HI;
+    ctx->pc += 4;
 }
 
 void simMFLO(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
     ctx->regs[inst->rtype.rd] = ctx->LO;
+    ctx->pc += 4;
 }
 
 void simMULT(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
     ctx->LO = ctx->regs[inst->rtype.rs] * ctx->regs[inst->rtype.rt];
+    ctx->pc += 4;
 }
 
 void simMULTU(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
     ctx->LO = ctx->regs[inst->rtype.rs] * ctx->regs[inst->rtype.rt];
+    ctx->pc += 4;
 }
 
 void simDIV(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
     ctx->LO = ctx->regs[inst->rtype.rs] / ctx->regs[inst->rtype.rt];
     ctx->HI = ctx->regs[inst->rtype.rs] % ctx->regs[inst->rtype.rt];
+    
+    ctx->pc += 4;
 }
 
 void simDIVU(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
     ctx->LO = ctx->regs[inst->rtype.rs] / ctx->regs[inst->rtype.rt];
     ctx->HI = ctx->regs[inst->rtype.rs] % ctx->regs[inst->rtype.rt];
+    
+    ctx->pc += 4;
 }
 
 void simADD(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
     ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] + ctx->regs[inst->rtype.rt];
+    ctx->pc += 4;
 }
 
 void simADDU(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
     ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] + ctx->regs[inst->rtype.rt];
+    ctx->pc += 4;
 }
 
 void simSUB(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
     ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] - ctx->regs[inst->rtype.rt];
+    ctx->pc += 4;
 }
 
 void simSUBU(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
     ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] - ctx->regs[inst->rtype.rt];
+    ctx->pc += 4;
 }
 
 void simAND(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
     ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] & ctx->regs[inst->rtype.rt];
+    ctx->pc += 4;
 }
 
 void simOR(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
     ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] | ctx->regs[inst->rtype.rt];
+    ctx->pc += 4;
 }
 
 void simXOR(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
     ctx->regs[inst->rtype.rd] = ctx->regs[inst->rtype.rs] ^ ctx->regs[inst->rtype.rt];
+    ctx->pc += 4;
 }
 
 void simSLT(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
@@ -529,6 +579,8 @@ void simSLT(union mips_instruction* inst, struct virtual_mem_region* memory, str
         ctx->regs[inst->rtype.rd] = 1;
     else
         ctx->regs[inst->rtype.rd] = 0;
+    
+    ctx->pc += 4;
 }
 
 void simSLTU(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
@@ -537,4 +589,6 @@ void simSLTU(union mips_instruction* inst, struct virtual_mem_region* memory, st
         ctx->regs[inst->rtype.rd] = 1;
     else
         ctx->regs[inst->rtype.rd] = 0;
+    
+    ctx->pc += 4;
 }
