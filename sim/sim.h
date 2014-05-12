@@ -41,7 +41,7 @@ enum opcodes
     OP_LUI      = 0x0f, //done | testing complete
     OP_LB       = 0x20, //done | testing complete
     OP_LW       = 0x23, //done | testing complete
-    OP_SB       = 0x28, //done | testing complete
+    OP_SB       = 0x28, //done
 	OP_SW		= 0x2b  //done | testing complete
 };
 
