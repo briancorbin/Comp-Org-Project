@@ -408,29 +408,7 @@ void simLUI(union mips_instruction* inst, struct virtual_mem_region* memory, str
 
 void simLB(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
     ctx->regs[inst->itype.rt] = FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, memory) & 0xff;
-=======
-<<<<<<< HEAD
-=======
->>>>>>> parent of 96d8843... Merge branch 'master' of https://github.com/briancorbin/Comp-Org-Project
-	if(inst->itype.imm % 4 == 0)
-		ctx->regs[inst->itype.rt] = FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, memory) & 0x000000ff;
-	else if(inst->itype.imm % 4 == 1)
-		ctx->regs[inst->itype.rt] = (FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 1, memory) & 0x0000ff00)>>8;
-	else if(inst->itype.imm % 4 == 2)
-		ctx->regs[inst->itype.rt] = (FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 2, memory) & 0x00ff0000)>>16;
-	else
-		ctx->regs[inst->itype.rt] = (FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 3, memory) & 0xff000000)>>24;
-<<<<<<< HEAD
-=======
-    ctx->regs[inst->itype.rt] = FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, memory) & 0xff;
-    ctx->pc += 4;
->>>>>>> FETCH_HEAD
->>>>>>> parent of b0b3dd2... commit
-=======
->>>>>>> parent of 96d8843... Merge branch 'master' of https://github.com/briancorbin/Comp-Org-Project
 }
 
 void simLW(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
@@ -440,29 +418,7 @@ void simLW(union mips_instruction* inst, struct virtual_mem_region* memory, stru
 
 void simSB(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
     StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, ctx->regs[inst->itype.rt] & 0xff, memory);
-=======
-<<<<<<< HEAD
-=======
->>>>>>> parent of 96d8843... Merge branch 'master' of https://github.com/briancorbin/Comp-Org-Project
-	if(inst->itype.imm % 4 == 0)
-		StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, ctx->regs[inst->itype.rt] & 0x000000ff, memory);
-	else if(inst->itype.imm % 4 == 1)
-		StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 1, (ctx->regs[inst->itype.rt]<<8) & 0x0000ff00, memory);
-	else if(inst->itype.imm % 4 == 2)
-		StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 2, (ctx->regs[inst->itype.rt]<<16) & 0x00ff0000, memory);
-	else
-		StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 3, (ctx->regs[inst->itype.rt]<<24) & 0xff000000, memory);
-<<<<<<< HEAD
-=======
-    StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, ctx->regs[inst->itype.rt] & 0xff, memory);
-    ctx->pc += 4;
->>>>>>> FETCH_HEAD
->>>>>>> parent of b0b3dd2... commit
-=======
->>>>>>> parent of 96d8843... Merge branch 'master' of https://github.com/briancorbin/Comp-Org-Project
 }
 
 void simSW(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
