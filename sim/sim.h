@@ -21,10 +21,10 @@
 enum opcodes
 {
 	OP_RTYPE	= 0x00,
-    OP_BGEZ     = 0x01, //done
-    OP_BGEZAL   = 0x01, //done
-    OP_BLTZ     = 0x01, //done
-    OP_BLTZAL   = 0x01, //done
+    OP_BGEZ     = 0x01, //done rt = 00001
+    OP_BGEZAL   = 0x01, //done rt = 10001
+    OP_BLTZ     = 0x01, //done rt = 00000
+    OP_BLTZAL   = 0x01, //done rt = 10000
     OP_J        = 0x02, //done
     OP_JAL      = 0x03, //done
     OP_BEQ      = 0x04, //done
@@ -39,10 +39,17 @@ enum opcodes
     OP_ORI      = 0x0d, //done | testing complete
     OP_XORI     = 0x0e, //done | testing complete
     OP_LUI      = 0x0f, //done | testing complete
+<<<<<<< HEAD
+    OP_LB       = 0x20, //done
+    OP_LW       = 0x23, //done
+    OP_SB       = 0x28, //done
+	OP_SW		= 0x2b  //done
+=======
     OP_LB       = 0x20, //done | testing complete
     OP_LW       = 0x23, //done | testing complete
-    OP_SB       = 0x28, //done
+    OP_SB       = 0x28, //done | testing complete
 	OP_SW		= 0x2b  //done | testing complete
+>>>>>>> parent of b0b3dd2... commit
 };
 
 enum functions
@@ -51,7 +58,7 @@ enum functions
     FUNC_SRL        = 0x02, //done | testing complete
     FUNC_SRA        = 0x03, //done | testing complete
     FUNC_SLLV       = 0x04, //done | testing complete
-    FUNC_SRLV       = 0x06, //done | testing complete 
+    FUNC_SRLV       = 0x06, //done | testing complete
 	FUNC_JR			= 0x08, //done
 	FUNC_SYSCALL	= 0x0c,
     FUNC_MFHI       = 0x10, //done | testing complete
