@@ -443,6 +443,7 @@ void simLB(union mips_instruction* inst, struct virtual_mem_region* memory, stru
 		ctx->regs[inst->itype.rt] = (FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 2, memory) & 0x00ff0000)>>16;
 	else
 		ctx->regs[inst->itype.rt] = (FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 3, memory) & 0xff000000)>>24;
+
     ctx->pc += 4;
 }
 
