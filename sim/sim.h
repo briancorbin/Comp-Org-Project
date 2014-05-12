@@ -47,19 +47,19 @@ enum opcodes
 
 enum functions
 {
-    FUNC_SLL        = 0x00, //done
-    FUNC_SRL        = 0x02, //done
-    FUNC_SRA        = 0x03, //done
-    FUNC_SLLV       = 0x04, //done
-    FUNC_SRLV       = 0x05, //done
+    FUNC_SLL        = 0x00, //done | testing complete
+    FUNC_SRL        = 0x02, //done | testing complete
+    FUNC_SRA        = 0x03, //done | testing complete
+    FUNC_SLLV       = 0x04, //done | testing complete
+    FUNC_SRLV       = 0x06, //done | testing complete
 	FUNC_JR			= 0x08, //done
 	FUNC_SYSCALL	= 0x0c,
-    FUNC_MFHI       = 0x10, //done
-    FUNC_MFLO       = 0x11, //done
-    FUNC_MULT       = 0x18, //done
-    FUNC_MULTU      = 0x19, //done
-    FUNC_DIV        = 0x1a, //done
-    FUNC_DIVU       = 0x1b, //done
+    FUNC_MFHI       = 0x10, //done | testing complete
+    FUNC_MFLO       = 0x12, //done | testing complete
+    FUNC_MULT       = 0x18, //done | testing complete
+    FUNC_MULTU      = 0x19, //done | testing complete
+    FUNC_DIV        = 0x1a, //done | testing complete
+    FUNC_DIVU       = 0x1b, //done | testing complete
     FUNC_ADD        = 0x20, //done | testing complete
 	FUNC_ADDU		= 0x21, //done | testing complete
     FUNC_SUB        = 0x22, //done | testing complete
@@ -143,7 +143,7 @@ struct context
 {
 	uint32_t pc;
 	uint32_t regs[32];
-    uint32_t HI;
+	uint32_t HI;
     uint32_t LO;
 };
 
