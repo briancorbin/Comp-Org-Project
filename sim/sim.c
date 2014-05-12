@@ -454,14 +454,35 @@ void simLW(union mips_instruction* inst, struct virtual_mem_region* memory, stru
 
 void simSB(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
+    uint32_t tempAddressData;
     if(inst->itype.imm % 4 == 0)
-		StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, ctx->regs[inst->itype.rt] & 0x000000ff, memory);
+    {
+        tempAddressData = FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, memory);
+        tempAddressData = tempAddressData & 0xffffff00;
+        tempAddressData = tempAddressData | (ctx->regs[inst->itype.rt] & 0x000000ff);
+        StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, tempAddressData, memory);
+    }
 	else if(inst->itype.imm % 4 == 1)
-		StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 1, (ctx->regs[inst->itype.rt]<<8) & 0x0000ff00, memory);
+    {
+        tempAddressData = FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 1, memory);
+        tempAddressData = tempAddressData & 0xffff00ff;
+        tempAddressData = tempAddressData | ((ctx->regs[inst->itype.rt]<<8) & 0x0000ff00);
+        StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, tempAddressData, memory);
+    }
 	else if(inst->itype.imm % 4 == 2)
-		StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 2, (ctx->regs[inst->itype.rt]<<16) & 0x00ff0000, memory);
+    {
+        tempAddressData = FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 2, memory);
+        tempAddressData = tempAddressData & 0xff00ffff;
+        tempAddressData = tempAddressData | ((ctx->regs[inst->itype.rt]<<16) & 0x00ff0000);
+        StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, tempAddressData, memory);
+    }
 	else
-		StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 3, (ctx->regs[inst->itype.rt]<<24) & 0xff000000, memory);
+    {
+        tempAddressData = FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 3, memory);
+        tempAddressData = tempAddressData & 0x00ffffff;
+        tempAddressData = tempAddressData | ((ctx->regs[inst->itype.rt]<<24) & 0xff000000);
+        StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, tempAddressData, memory);
+    }
     ctx->pc += 4;
 }
 
