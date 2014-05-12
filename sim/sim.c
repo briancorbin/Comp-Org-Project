@@ -435,11 +435,7 @@ void simLUI(union mips_instruction* inst, struct virtual_mem_region* memory, str
 
 void simLB(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
-<<<<<<< HEAD
-	if(inst->itype.imm % 4 == 0)
-=======
     if(inst->itype.imm % 4 == 0)
->>>>>>> 0516c618dac5d4eafd4cfb6275841a377acdc857
 		ctx->regs[inst->itype.rt] = FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, memory) & 0x000000ff;
 	else if(inst->itype.imm % 4 == 1)
 		ctx->regs[inst->itype.rt] = (FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 1, memory) & 0x0000ff00)>>8;
@@ -447,10 +443,7 @@ void simLB(union mips_instruction* inst, struct virtual_mem_region* memory, stru
 		ctx->regs[inst->itype.rt] = (FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 2, memory) & 0x00ff0000)>>16;
 	else
 		ctx->regs[inst->itype.rt] = (FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 3, memory) & 0xff000000)>>24;
-<<<<<<< HEAD
-=======
     ctx->pc += 4;
->>>>>>> 0516c618dac5d4eafd4cfb6275841a377acdc857
 }
 
 void simLW(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
@@ -461,17 +454,7 @@ void simLW(union mips_instruction* inst, struct virtual_mem_region* memory, stru
 
 void simSB(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
-<<<<<<< HEAD
-	if(inst->itype.imm % 4 == 0)
-		StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, ctx->regs[inst->itype.rt] & 0x000000ff, memory);
-	else if(inst->itype.imm % 4 == 1)
-		StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 1, (ctx->regs[inst->itype.rt]<<8) & 0x0000ff00, memory);
-	else if(inst->itype.imm % 4 == 2)
-		StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 2, (ctx->regs[inst->itype.rt]<<16) & 0x00ff0000, memory);
-	else
-		StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 3, (ctx->regs[inst->itype.rt]<<24) & 0xff000000, memory);
-=======
-    uint32_t tempAddressData;
+	uint32_t tempAddressData;
     if(inst->itype.imm % 4 == 0)
     {
         tempAddressData = FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, memory);
@@ -484,24 +467,23 @@ void simSB(union mips_instruction* inst, struct virtual_mem_region* memory, stru
         tempAddressData = FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 1, memory);
         tempAddressData = tempAddressData & 0xffff00ff;
         tempAddressData = tempAddressData | ((ctx->regs[inst->itype.rt]<<8) & 0x0000ff00);
-        StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, tempAddressData, memory);
+        StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 1, tempAddressData, memory);
     }
 	else if(inst->itype.imm % 4 == 2)
     {
         tempAddressData = FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 2, memory);
         tempAddressData = tempAddressData & 0xff00ffff;
         tempAddressData = tempAddressData | ((ctx->regs[inst->itype.rt]<<16) & 0x00ff0000);
-        StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, tempAddressData, memory);
+        StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 2, tempAddressData, memory);
     }
 	else
     {
         tempAddressData = FetchWordFromVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 3, memory);
         tempAddressData = tempAddressData & 0x00ffffff;
         tempAddressData = tempAddressData | ((ctx->regs[inst->itype.rt]<<24) & 0xff000000);
-        StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm, tempAddressData, memory);
+        StoreWordToVirtualMemory(ctx->regs[inst->itype.rs] + inst->itype.imm - 3, tempAddressData, memory);
     }
     ctx->pc += 4;
->>>>>>> 0516c618dac5d4eafd4cfb6275841a377acdc857
 }
 
 void simSW(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
