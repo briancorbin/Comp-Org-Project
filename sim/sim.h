@@ -39,10 +39,10 @@ enum opcodes
     OP_ORI      = 0x0d, //done | testing complete
     OP_XORI     = 0x0e, //done | testing complete
     OP_LUI      = 0x0f, //done | testing complete
-    OP_LB       = 0x20, //done
-    OP_LW       = 0x23, //done
+    OP_LB       = 0x20, //done | testing complete
+    OP_LW       = 0x23, //done | testing complete
     OP_SB       = 0x28, //done
-	OP_SW		= 0x2b  //done
+	OP_SW		= 0x2b  //done | testing complete
 };
 
 enum functions
