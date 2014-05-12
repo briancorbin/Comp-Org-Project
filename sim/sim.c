@@ -327,13 +327,13 @@ void simBLTZAL(union mips_instruction* inst, struct virtual_mem_region* memory, 
 
 void simJ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
-	ctx->pc = inst->jtype.addr;
+	ctx->pc = (ctx->pc & 0xf0000000) | (inst->jtype.addr << 2);
 }
 
 void simJAL(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
 	ctx->regs[ra] = ctx->pc + 8;
-	ctx->pc = (inst->jtype.addr << 2);
+	ctx->pc = (ctx->pc & 0xf0000000) | (inst->jtype.addr << 2);
 }
 
 void simBEQ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
