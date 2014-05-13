@@ -25,8 +25,8 @@ enum opcodes
     OP_BGEZAL   = 0x01, //done
     OP_BLTZ     = 0x01, //done
     OP_BLTZAL   = 0x01, //done
-    OP_J        = 0x02, //done
-    OP_JAL      = 0x03, //done
+    OP_J        = 0x02, //done | testing complete
+    OP_JAL      = 0x03, //done | testing complete
     OP_BEQ      = 0x04, //done
     OP_BNE      = 0x05, //done
     OP_BLEZ     = 0x06, //done
@@ -52,7 +52,7 @@ enum functions
     FUNC_SRA        = 0x03, //done | testing complete
     FUNC_SLLV       = 0x04, //done | testing complete
     FUNC_SRLV       = 0x06, //done | testing complete 
-	FUNC_JR			= 0x08, //done
+	FUNC_JR			= 0x08, //done | testing complete
 	FUNC_SYSCALL	= 0x0c,
     FUNC_MFHI       = 0x10, //done | testing complete
     FUNC_MFLO       = 0x12, //done | testing complete
@@ -155,7 +155,6 @@ enum mips_regids
 	a0, a1, a2, a3,
 	t0, t1, t2, t3, t4, t5, t6, t7, t8, t9,
 	s0, s1, s2, s3, s4, s5, s6, s7, s8,
-	fp,
 	k0, k1,
 	gp,
 	sp,
@@ -179,7 +178,7 @@ int SimulateInstruction(union mips_instruction* inst, struct virtual_mem_region*
 int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx);
 int SimulateBswitch(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx);
 int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct context* ctx);
-int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct context* ctx);
+void simPrintString(struct virtual_mem_region* memory, struct context* ctx);
 
 // Simulate specific instructions
 void simBGEZ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx);

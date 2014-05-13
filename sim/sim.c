@@ -256,13 +256,12 @@ int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct 
 			printf("%d\n", ctx->regs[a0]);
 			break;
 		case 4: //print string
-			printf("%s", ctx->regs[a0]);
+			simPrintString(memory, ctx);
 			break;
 		case 5: //read integer
 			scanf("%d", ctx->regs[v0]);
 			break;
 		case 8: //read string
-			scanf("%s", ctx->regs[v0]);
 			break;
 		case 10: //exit (end of program)
 			exit(1);
@@ -273,6 +272,13 @@ int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct 
     
     ctx->pc += 4;
 	return 1;
+}
+
+void simPrintString(struct virtual_mem_region* memory, struct context* ctx)
+{
+	uint32_t dataAtMemAdr;
+	dataAtMemAdr = FetchWordFromVirtualMemory(ctx->regs[a0], memory);
+	printf("%s", dataAtMemAdr);
 }
 
 int SimulateBswitch(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
