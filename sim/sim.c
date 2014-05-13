@@ -309,12 +309,11 @@ void simReadString(struct virtual_mem_region* memory, struct context* ctx)
 		return;
 	}
 	else {
-		for (int i = 0; i < n; i++) {
-			
-		}
-		while (--n > 0) {
-			for (int i = 0; i < 4; i++) {
-				scanf("%c\n", temp);
+		for (int i = 0; i < n; i += 4) {
+			uint32_t value = 0;
+			for(int j=0; j<4; j++)
+			{
+				char temp = string[i+j];
 				value << 8;
 				value += (uint32_t)temp;
 			}
