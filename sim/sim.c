@@ -262,6 +262,7 @@ int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct 
 			scanf("%d", ctx->regs[v0]);
 			break;
 		case 8: //read string
+			simReadString(memory, ctx);
 			break;
 		case 10: //exit (end of program)
 			exit(1);
@@ -276,10 +277,35 @@ int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct 
 
 void simPrintString(struct virtual_mem_region* memory, struct context* ctx)
 {
-	uint32_t dataAtMemAdr;
-	dataAtMemAdr = FetchWordFromVirtualMemory(ctx->regs[a0], memory);
-	printf("%s", dataAtMemAdr);
+	uint32_t addr = ctx->regs[a0];
+	uint32_t dataAtMemAdr =	FetchWordFromVirtualMemory(addr, memory);
+	while (dataAtMemAdr != 0) {
+		printf("%c\n", (char)dataAtMemAdr);
+		addr += 4;
+		uint32_t dataAtMemAdr =	FetchWordFromVirtualMemory(addr, memory);
+	}
 }
+
+void simReadString(struct virtual_mem_region* memory, struct context* ctx)
+{
+	uint32_t addr = ctx->regs[a0];
+	uint32_t count = ctx->regs[a1];
+	uint32_t value = scanf("%c\n", (int))
+	while (dataAtMemAdr != 0) {
+		printf( "%c\n", (char)dataAtMemAdr );
+		addr += 4;
+		StoreWordToVirtualMemory(addr, value, memory);
+	}
+}
+
+// read string	8	$a0 = address of input buffer
+// $a1 = maximum number of characters to read	See note below table
+
+// Service 8 - Follows semantics of UNIX 'fgets'. For specified length n,
+// string can be no longer than n-1. If less than that, adds newline to end.
+// In either case, then pads with null byte If n = 1, input is ignored and
+// null byte placed at buffer address. If n < 1, input is ignored and nothing
+// is written to the buffer. 
 
 int SimulateBswitch(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
