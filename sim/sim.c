@@ -331,7 +331,7 @@ int SimulateBswitch(union mips_instruction* inst, struct virtual_mem_region* mem
 void simBGEZ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
 	if (ctx->regs[inst->itype.rs] >= 0)
-		ctx->pc = (inst->itype.imm << 2);
+		ctx->pc += 4 + (inst->itype.imm << 2);
     else
         ctx->pc += 4;
 }
@@ -340,7 +340,7 @@ void simBGEZAL(union mips_instruction* inst, struct virtual_mem_region* memory, 
 {
 	if (ctx->regs[inst->itype.rs] >= 0) {
 		ctx->regs[ra] = ctx->pc + 8;
-		ctx->pc = (inst->itype.imm << 2);
+		ctx->pc += 4 + (inst->itype.imm << 2);
 	}
     else
         ctx->pc += 4;
@@ -349,7 +349,7 @@ void simBGEZAL(union mips_instruction* inst, struct virtual_mem_region* memory, 
 void simBLTZ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
 	if (ctx->regs[inst->itype.rs] < 0)
-		ctx->pc = (inst->itype.imm << 2);
+		ctx->pc += 4 + (inst->itype.imm << 2);
     else
         ctx->pc += 4;
 }
@@ -358,7 +358,7 @@ void simBLTZAL(union mips_instruction* inst, struct virtual_mem_region* memory, 
 {
 	if (ctx->regs[inst->itype.rs] < 0) {
 		ctx->regs[ra] = ctx->pc + 8;
-		ctx->pc = (inst->itype.imm << 2);
+		ctx->pc += 4 + (inst->itype.imm << 2);
 	}
     else
         ctx->pc += 4;
@@ -378,7 +378,7 @@ void simJAL(union mips_instruction* inst, struct virtual_mem_region* memory, str
 void simBEQ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
 	if(ctx->regs[inst->itype.rs] == ctx->regs[inst->itype.rt])
- 		ctx->pc = (ctx->pc + (inst->itype.imm << 2));
+ 		ctx->pc += 4 + (inst->itype.imm << 2);
     else
         ctx->pc += 4;
 }
@@ -386,7 +386,7 @@ void simBEQ(union mips_instruction* inst, struct virtual_mem_region* memory, str
 void simBNE(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
 	if(ctx->regs[inst->itype.rs] != ctx->regs[inst->itype.rt])
- 		ctx->pc = (ctx->pc + (inst->itype.imm << 2));
+ 		ctx->pc += 4 + (inst->itype.imm << 2);
     else
         ctx->pc += 4;
 }
@@ -394,7 +394,7 @@ void simBNE(union mips_instruction* inst, struct virtual_mem_region* memory, str
 void simBLEZ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
 	if (ctx->regs[inst->itype.rs] <= 0)
-		ctx->pc = (ctx->pc + (inst->itype.imm << 2));
+		ctx->pc += 4 + (inst->itype.imm << 2);
     else
         ctx->pc += 4;
 }
@@ -402,7 +402,7 @@ void simBLEZ(union mips_instruction* inst, struct virtual_mem_region* memory, st
 void simBGTZ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx)
 {
 	if (ctx->regs[inst->itype.rs] > 0)
-		ctx->pc = (ctx->pc + (inst->itype.imm << 2));
+		ctx->pc += 4 + (inst->itype.imm << 2);
     else
         ctx->pc += 4;
 }

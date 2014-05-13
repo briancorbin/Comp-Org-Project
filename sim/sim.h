@@ -21,16 +21,16 @@
 enum opcodes
 {
 	OP_RTYPE	= 0x00,
-    OP_BGEZ     = 0x01, //done
-    OP_BGEZAL   = 0x01, //done
-    OP_BLTZ     = 0x01, //done
-    OP_BLTZAL   = 0x01, //done
+    OP_BGEZ     = 0x01, //done | testing complete
+    OP_BGEZAL   = 0x01, //done | testing complete
+    OP_BLTZ     = 0x01, //done | testing complete
+    OP_BLTZAL   = 0x01, //done | testing complete
     OP_J        = 0x02, //done | testing complete
     OP_JAL      = 0x03, //done | testing complete
-    OP_BEQ      = 0x04, //done
-    OP_BNE      = 0x05, //done
-    OP_BLEZ     = 0x06, //done
-    OP_BGTZ     = 0x07, //done
+    OP_BEQ      = 0x04, //done | testing complete
+    OP_BNE      = 0x05, //done | testing complete
+    OP_BLEZ     = 0x06, //done | testing complete
+    OP_BGTZ     = 0x07, //done | testing complete
     OP_ADDI     = 0x08, //done | testing complete
     OP_ADDIU    = 0x09, //done | testing complete
     OP_SLTI     = 0x0a, //done | testing complete
