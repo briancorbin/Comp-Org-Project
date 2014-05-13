@@ -1,17 +1,18 @@
 #include "registers.h"
 
 string1: .asciiz "Testing... Testing 1 2 3..."
+string2: .space 100
 
 .globl __start
 
 __start:
-	li v0, 5
+	li v0, 8
+	la a0, string2
+	addi a1, zero, 3
 	syscall
 
-	move s0, v0
-
-	li v0, 1
-	move a0, s0
+	li v0, 4
+	la a0, string2
 	syscall
 
 quit:

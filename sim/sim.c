@@ -299,7 +299,7 @@ void simReadString(struct virtual_mem_region* memory, struct context* ctx)
 	uint32_t addr = ctx->regs[a0];
 	uint32_t n = ctx->regs[a1];
 	char string[n];
-	scanf("%s", string);
+	scanf ("%[^\n]%*c", string);
 
 	if (n < 1) {
 		return;
@@ -309,16 +309,50 @@ void simReadString(struct virtual_mem_region* memory, struct context* ctx)
 		return;
 	}
 	else {
-		uint32_t value = 0;
-		for (int i = 1; i < n + 1; i++) {
-			char temp = string[i];
-			value << 8;
-			value += (uint32_t)temp;
-			if (i % 4 == 0) {
-				StoreWordToVirtualMemory(addr, value, memory);
-				addr += 4;
-				value = 0;
+		int i=0;
+		while((int)string[i] != 0 && i < n-1)
+		{
+			uint32_t newData;
+			newData = 0;
+			for(int j=0; j<4; j++)
+			{
+				if(i == n-1)
+				{
+					//printf("i has reached n-1 and is writing nullChar to newData and storing newData at memAddress: %08x\n", addr);
+					StoreWordToVirtualMemory(addr, newData, memory);
+					return;
+				}
+
+				if((int)string[i] == 0)
+				{
+					if(i%4 == 0)
+						newData += 10<<24;
+					else if(i%4 == 1)
+						newData += 10<<16;
+					else if(1%4 == 2)
+						newData += 10<<8;
+					else
+						newData += 10;
+					//printf("char is a nullChar and is adding newLine to newData and ");
+					//printf("storing newData at memAddress: %08x\n", addr);
+					StoreWordToVirtualMemory(addr, newData, memory);
+					return;
+				}
+
+				//printf("writing %c to newData at memAddress: %08x\n", string[i], addr);
+				if(i%4 == 0)
+					newData += (int)string[i];
+				else if(i%4 == 1)
+					newData += ((int)string[i])<<8;
+				else if(i%4 == 2)
+					newData += ((int)string[i])<<16;
+				else
+					newData += ((int)string[i])<<24;
+				i++;
 			}
+			//printf("storing newData at memAddress: %08x and incrementing to next data block\n", addr);
+			StoreWordToVirtualMemory(addr, newData, memory);
+			addr += 4;
 		}
 	}
 }
