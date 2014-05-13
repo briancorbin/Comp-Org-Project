@@ -4,9 +4,6 @@
 	@brief The core of the simulator
  */
 #include "sim.h"
-#include "stdio.h"
-#include "stdint.h"
-#include "time.h"
 
 uint64_t pause = 0;
 /**
@@ -88,8 +85,6 @@ void RunSimulator(struct virtual_mem_region* memory, struct context* ctx)
 	union mips_instruction inst;
 	uint64_t inst_count = 0;
 	uint64_t diff;
-	struct timespec start, end;
-	clock_gettime(CLOCK_REALTIME, &start);
 
 	while(1)
 	{
@@ -99,11 +94,6 @@ void RunSimulator(struct virtual_mem_region* memory, struct context* ctx)
 		else 
 			inst_count++;
 	}
-
-	// Evaluate time span
-	clock_gettime(CLOCK_REALTIME, &end);	/* mark the end time */
-	diff = 1000000000 * (end.tv_sec - start.tv_sec) + end.tv_nsec - start.tv_nsec;
-	diff -= pause;
 
 	// File Output
 	File* fp;
@@ -281,13 +271,7 @@ int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct 
 			simPrintString(memory, ctx);
 			break;
 		case 5: //read integer
-			uint64_t diff;
-			struct timespec start, end;
-			clock_gettime(CLOCK_REALTIME, &start);	/* mark start pause time */
 			scanf("%d", &(ctx->regs[v0]));
-			clock_gettime(CLOCK_REALTIME, &end);	/* mark the end pause time */
-			diff = BILLION * (end.tv_sec - start.tv_sec) + end.tv_nsec - start.tv_nsec;
-			pause += diff;
 			break;
 		case 8: //read string
 			simReadString(memory, ctx);
@@ -327,14 +311,7 @@ void simReadString(struct virtual_mem_region* memory, struct context* ctx)
 	uint32_t addr = ctx->regs[a0];
 	uint32_t n = ctx->regs[a1];
 	char string[n];
-
-	uint64_t diff;
-	struct timespec start, end;
-	clock_gettime(CLOCK_REALTIME, &start);	/* mark start pause time */
 	scanf ("%[^\n]%*c", string);
-	clock_gettime(CLOCK_REALTIME, &end);	/* mark the end pause time */
-	diff = BILLION * (end.tv_sec - start.tv_sec) + end.tv_nsec - start.tv_nsec;
-	pause += diff;
 
 	if (n < 1) {
 		return;
