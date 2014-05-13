@@ -290,8 +290,9 @@ void simReadString(struct virtual_mem_region* memory, struct context* ctx)
 {
 	uint32_t addr = ctx->regs[a0];
 	uint32_t n = ctx->regs[a1];
-	char temp;
-	uint32_t value;
+	char string[n];
+	scanf("%s", string);
+
 	if (n < 1) {
 		return;
 	}
@@ -300,11 +301,17 @@ void simReadString(struct virtual_mem_region* memory, struct context* ctx)
 		return;
 	}
 	else {
+		for (int i = 0; i < n; i++) {
+			
+		}
 		while (--n > 0) {
-			scanf("%c\n", temp);
-			value = (uint32_t)temp;
+			for (int i = 0; i < 4; i++) {
+				scanf("%c\n", temp);
+				value << 8;
+				value += (uint32_t)temp;
+			}
 			StoreWordToVirtualMemory(addr, value, memory);
-			// Increment addr or something to work with the next char.
+			addr += 4;
 		}
 	}
 }
