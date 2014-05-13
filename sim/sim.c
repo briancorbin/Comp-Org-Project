@@ -253,7 +253,7 @@ int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct 
 {
 	switch (callnum) {
 		case 1: //print integer
-			printf("%d\n", ctx->regs[a0]);
+			printf("%d", ctx->regs[a0]);
 			break;
 		case 4: //print string
 			simPrintString(memory, ctx);
@@ -279,10 +279,18 @@ void simPrintString(struct virtual_mem_region* memory, struct context* ctx)
 {
 	uint32_t addr = ctx->regs[a0];
 	uint32_t dataAtMemAdr =	FetchWordFromVirtualMemory(addr, memory);
-	while (dataAtMemAdr != 0) {
-		printf("%c\n", (char)dataAtMemAdr);
+
+	while(dataAtMemAdr != 0)
+	{
+		for(int i=0; i<4; i++)
+		{
+			printf("%c", (char)dataAtMemAdr);
+			dataAtMemAdr = dataAtMemAdr>>8;
+			if(dataAtMemAdr == 0 && i != 3)
+				return;
+		}
 		addr += 4;
-		uint32_t dataAtMemAdr =	FetchWordFromVirtualMemory(addr, memory);
+		dataAtMemAdr = FetchWordFromVirtualMemory(addr, memory);
 	}
 }
 
