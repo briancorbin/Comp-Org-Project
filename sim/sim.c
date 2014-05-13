@@ -259,7 +259,7 @@ int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct 
 			simPrintString(memory, ctx);
 			break;
 		case 5: //read integer
-			scanf("%d", ctx->regs[v0]);
+			scanf("%d", &(ctx->regs[v0]));
 			break;
 		case 8: //read string
 			simReadString(memory, ctx);

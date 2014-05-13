@@ -179,6 +179,7 @@ int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_re
 int SimulateBswitch(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx);
 int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct context* ctx);
 void simPrintString(struct virtual_mem_region* memory, struct context* ctx);
+void simReadString(struct virtual_mem_region* memory, struct context* ctx);
 
 // Simulate specific instructions
 void simBGEZ(union mips_instruction* inst, struct virtual_mem_region* memory, struct context* ctx);
