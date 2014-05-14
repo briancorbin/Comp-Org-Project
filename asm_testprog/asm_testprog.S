@@ -8,7 +8,7 @@ string2: .space 100
 __start:
 	li v0, 8
 	la a0, string2
-	addi a1, zero, 3
+	addi a1, zero, 12
 	syscall
 
 	li v0, 4

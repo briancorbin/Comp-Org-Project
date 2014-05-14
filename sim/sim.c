@@ -8,7 +8,14 @@
 #include "stdint.h"
 #include "time.h"
 
-uint64_t pause = 0;
+#define BILLION 1000000000L
+
+int inst_count = 0;
+uint64_t skip = 0;
+uint64_t finalTime;
+struct timespec start, end;
+
+
 /**
 	@brief Read logic for instruction fetch and load instructions
 	
@@ -83,12 +90,9 @@ void StoreWordToVirtualMemory(uint32_t address, uint32_t value, struct virtual_m
 void RunSimulator(struct virtual_mem_region* memory, struct context* ctx)
 {
 	printf("Starting simulation...\n");
-
 	// Time tracking variables
 	union mips_instruction inst;
-	uint64_t inst_count = 0;
-	uint64_t diff;
-	struct timespec start, end;
+
 	clock_gettime(CLOCK_REALTIME, &start);
 
 	while(1)
@@ -99,16 +103,6 @@ void RunSimulator(struct virtual_mem_region* memory, struct context* ctx)
 		else 
 			inst_count++;
 	}
-
-	// Evaluate time span
-	clock_gettime(CLOCK_REALTIME, &end);	/* mark the end time */
-	diff = 1000000000 * (end.tv_sec - start.tv_sec) + end.tv_nsec - start.tv_nsec;
-	diff -= pause;
-
-	// File Output
-	File* fp;
-	fp = open("simlog.txt", 'w');
-  	fprintf(fp, "%u instructions took %u nanoseconds to run!\n", inst_count, diff);
 }
 
 /**
@@ -271,8 +265,21 @@ int SimulateRtypeInstruction(union mips_instruction* inst, struct virtual_mem_re
 	return 1;
 }
 
+void timefunc()
+{
+	FILE* out = fopen("output.txt", "w");
+	clock_gettime(CLOCK_REALTIME, &end);
+	finalTime = BILLION * (end.tv_sec - start.tv_sec) + end.tv_nsec - start.tv_nsec;
+	finalTime -= skip;
+
+	fprintf(out, "Output File\n");
+	fprintf(out, "Total Instruction Count: %d\n", inst_count);
+	fprintf(out, "Time Elapsed: %llu nanoseconds\n", (long long unsigned int) finalTime);
+}
+
 int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct context* ctx)
 {
+	struct timespec startSkip, endSkip;
 	switch (callnum) {
 		case 1: //print integer
 			printf("%d", ctx->regs[a0]);
@@ -281,18 +288,16 @@ int SimulateSyscall(uint32_t callnum, struct virtual_mem_region* memory, struct 
 			simPrintString(memory, ctx);
 			break;
 		case 5: //read integer
-			uint64_t diff;
-			struct timespec start, end;
-			clock_gettime(CLOCK_REALTIME, &start);	/* mark start pause time */
+			clock_gettime(CLOCK_REALTIME, &startSkip);
 			scanf("%d", &(ctx->regs[v0]));
-			clock_gettime(CLOCK_REALTIME, &end);	/* mark the end pause time */
-			diff = BILLION * (end.tv_sec - start.tv_sec) + end.tv_nsec - start.tv_nsec;
-			pause += diff;
+			clock_gettime(CLOCK_REALTIME, &endSkip);
+			skip += (BILLION * (endSkip.tv_sec - startSkip.tv_sec) + endSkip.tv_nsec - startSkip.tv_nsec);
 			break;
 		case 8: //read string
 			simReadString(memory, ctx);
 			break;
 		case 10: //exit (end of program)
+			timefunc();
 			exit(1);
 			break;
 		default:
@@ -327,14 +332,13 @@ void simReadString(struct virtual_mem_region* memory, struct context* ctx)
 	uint32_t addr = ctx->regs[a0];
 	uint32_t n = ctx->regs[a1];
 	char string[n];
+	struct timespec startSkip, endSkip;
 
-	uint64_t diff;
-	struct timespec start, end;
-	clock_gettime(CLOCK_REALTIME, &start);	/* mark start pause time */
+	clock_gettime(CLOCK_REALTIME, &startSkip);
 	scanf ("%[^\n]%*c", string);
-	clock_gettime(CLOCK_REALTIME, &end);	/* mark the end pause time */
-	diff = BILLION * (end.tv_sec - start.tv_sec) + end.tv_nsec - start.tv_nsec;
-	pause += diff;
+	clock_gettime(CLOCK_REALTIME, &endSkip);
+
+	skip += (BILLION * (endSkip.tv_sec - startSkip.tv_sec) + endSkip.tv_nsec - startSkip.tv_nsec);
 
 	if (n < 1) {
 		return;
@@ -361,13 +365,13 @@ void simReadString(struct virtual_mem_region* memory, struct context* ctx)
 				if((int)string[i] == 0)
 				{
 					if(i%4 == 0)
-						newData += 10<<24;
-					else if(i%4 == 1)
-						newData += 10<<16;
-					else if(1%4 == 2)
-						newData += 10<<8;
-					else
 						newData += 10;
+					else if(i%4 == 1)
+						newData += 10<<8;
+					else if(1%4 == 2)
+						newData += 10<<16;
+					else
+						newData += 10<<24;
 					//printf("char is a nullChar and is adding newLine to newData and ");
 					//printf("storing newData at memAddress: %08x\n", addr);
 					StoreWordToVirtualMemory(addr, newData, memory);

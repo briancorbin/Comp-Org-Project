@@ -1,0 +1,6 @@
+Team Members:
+	Brian Corbin
+	Ming Luo
+
+Notes:
+	Finished all instructions, and all required Syscall functions.

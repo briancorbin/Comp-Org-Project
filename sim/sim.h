@@ -7,9 +7,11 @@
 #ifndef sim_h
 #define sim_h
 
+#define _POSIX_C_SOURCE 199309
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // System headers
-
+#include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -20,7 +22,7 @@
 
 enum opcodes
 {
-	OP_RTYPE	= 0x00,
+	OP_RTYPE	= 0x00, //done | testing complete
     OP_BGEZ     = 0x01, //done | testing complete
     OP_BGEZAL   = 0x01, //done | testing complete
     OP_BLTZ     = 0x01, //done | testing complete
@@ -53,7 +55,7 @@ enum functions
     FUNC_SLLV       = 0x04, //done | testing complete
     FUNC_SRLV       = 0x06, //done | testing complete 
 	FUNC_JR			= 0x08, //done | testing complete
-	FUNC_SYSCALL	= 0x0c,
+	FUNC_SYSCALL	= 0x0c, //done | testing complete
     FUNC_MFHI       = 0x10, //done | testing complete
     FUNC_MFLO       = 0x12, //done | testing complete
     FUNC_MULT       = 0x18, //done | testing complete
